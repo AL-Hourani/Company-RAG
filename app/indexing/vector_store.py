@@ -5,6 +5,7 @@ from langchain_chroma import Chroma
 from app.core.config import settings
 from app.indexing.embeddings import GeminiEmbeddingProvider
 from langchain_core.documents import Document
+from app.core.retrieval import RetrievalFilter
 
 class ChromaVectorStore:
     
@@ -36,17 +37,14 @@ class ChromaVectorStore:
     def similarity_search(
         self,
         query: str,
-        k: int = 5,
-        tenant_id: str | None = None,
+        filters : RetrievalFilter,
+        k: int = 5
     ) -> list[Document]:
 
-        filter_metadata = None
 
-        if tenant_id is not None:
-            filter_metadata = {
-                "tenant_id": tenant_id,
-            }
-
+        filter_metadata = self._build_filter(
+            filters
+        )
         return self._store.similarity_search(
             query=query,
             k=k,
@@ -56,19 +54,47 @@ class ChromaVectorStore:
     def similarity_search_with_scores(
         self,
         query: str,
-        k: int = 5,
-        tenant_id: str | None = None,
+        filters : RetrievalFilter,
+        k: int = 5
     ) -> list[tuple[Document, float]]:
 
-        filter_metadata = None
 
-        if tenant_id is not None:
-            filter_metadata = {
-                "tenant_id": tenant_id,
-            }
+        filter_metadata = self._build_filter(
+            filters
+        )
 
         return self._store.similarity_search_with_score(
             query=query,
             k=k,
             filter=filter_metadata,
         )
+        
+    def _build_filter(
+        self , 
+        filters : RetrievalFilter
+    ) -> dict:
+        
+        metadata_filter = {
+            "tenant_id":filters.tenant_id
+        }
+        
+        if filters.department:
+            metadata_filter["department"]= (
+                filters.department
+            )
+            
+        if filters.document_type:
+            metadata_filter["document_type"]= (
+                filters.document_type
+            )
+            
+        if filters.document_id:
+            metadata_filter["document_id"]= (
+                filters.document_id
+            )
+        
+        if filters.version_number:
+            metadata_filter["version_number"]= (
+                filters.version_number
+            )
+        

@@ -11,7 +11,7 @@ from app.ingestion.repository import DocumentRepository
 async def main() -> None:
 
     file_path = Path(
-        "data/documents/hr/remote_work_policy.txt"
+        "data/documents/engineering/test.txt"
     )
 
     embedding_provider = (
@@ -37,18 +37,18 @@ async def main() -> None:
 
         await orchestrator.ingest_file(
             file_path=file_path,
-            tenant_id="acme",
-            department="hr",
-            document_type="policy",
+            tenant_id="plant",
+            department="fruits",
+            document_type="eat",
         )
 
         print("\n--- SECOND INGESTION ---")
 
         await orchestrator.ingest_file(
             file_path=file_path,
-            tenant_id="acme",
-            department="hr",
-            document_type="policy",
+            tenant_id="plant",
+            department="fruits",
+            document_type="eat",
         )
 
 

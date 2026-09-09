@@ -1099,8 +1099,8 @@ Current progress:
 ```text
 Phase 1 — Foundation              ✅
 Phase 2 — Ingestion               ✅
-Phase 3 — Indexing                🚧
-Phase 4 — Retrieval               ⏳
+Phase 3 — Indexing                ✅
+Phase 4 — Retrieval               ✅
 Phase 5 — Generation              ⏳
 Phase 6 — Evaluation              ⏳
 Phase 7 — Production API          ⏳
